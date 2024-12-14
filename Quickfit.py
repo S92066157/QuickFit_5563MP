@@ -44,9 +44,6 @@ def assign_process_to_memory(process_list, arg_list_8kb, arg_list_16kb, arg_list
     num_of_process = len(process_list)
 
     # initiate assigned memory lists
-    # assigned_8kb = []
-    # assigned_16kb = []
-    # assigned_32kb = []
     assigned_all = []
 
     # Check the required memory size for each process and assign it to the first available memory block.
@@ -110,15 +107,6 @@ def assign_process_to_memory(process_list, arg_list_8kb, arg_list_16kb, arg_list
 
     print("\n\n--- Memory Allocation ---")
     print("Process ID --- Memory Block ID --- (Size)")
-
-    # for [block_id, process_id, process_size] in assigned_8kb:
-    #     print(f"{block_id} --- {process_id} (size: {process_size}KB)")
-    #
-    # for [block_id, process_id, process_size] in assigned_16kb:
-    #     print(f"{block_id} --- {process_id} (size: {process_size}KB)")
-    #
-    # for [block_id, process_id, process_size] in assigned_32kb:
-    #     print(f"{block_id} --- {process_id} (size: {process_size}KB)")
 
     for [block_id, process_id, process_size] in assigned_all:
         print(f"{process_id} --- {block_id} --- (size: {process_size}KB)")
