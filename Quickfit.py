@@ -7,7 +7,7 @@ list_8kb = []
 list_16kb = []
 list_32kb = []
 errors = []
-processSizes = []
+process_size = []
 
 
 def memory_block_init():
@@ -40,8 +40,8 @@ def memory_block_init():
 
 
 # function of assign process to memory
-def assign_process_to_memory(process_list, arg_list_8kb, arg_list_16kb, arg_list_32kb, process_sizes):
-    num_of_process = len(process_list)
+def assign_process_to_memory(process_sizes, arg_list_8kb, arg_list_16kb, arg_list_32kb ):
+    num_of_process = len(process_sizes)
 
     # initiate assigned memory lists
     assigned_all = []
@@ -55,28 +55,28 @@ def assign_process_to_memory(process_list, arg_list_8kb, arg_list_16kb, arg_list
 
         process_name = f"P{num + 1}"
 
-        if process_list[num] <= 8:
-            if balance_8kb > 0:
+        if process_sizes[num] <= 8:
 
+            if balance_8kb > 0:
                 first = arg_list_8kb.pop(0)
                 first = first, process_name, process_sizes[num]
                 assigned_all.append(first)
 
             elif balance_16kb > 0:
-
                 first = arg_list_16kb.pop(0)
                 first = first, process_name, process_sizes[num]
                 assigned_all.append(first)
-            elif balance_32kb > 0:
 
+            elif balance_32kb > 0:
                 first = arg_list_32kb.pop(0)
                 first = first, process_name, process_sizes[num]
                 assigned_all.append(first)
+
             else:
                 errors.append(
                     f" There is no free memory space to assign process {num + 1} (Process Size : {process_sizes[num]}KB)")
 
-        elif 8 < process_list[num] <= 16:
+        elif 8 < process_sizes[num] <= 16:
 
             if balance_16kb > 0:
                 first = arg_list_16kb.pop(0)
@@ -87,11 +87,12 @@ def assign_process_to_memory(process_list, arg_list_8kb, arg_list_16kb, arg_list
                 first = arg_list_32kb.pop(0)
                 first = first, process_name, process_sizes[num]
                 assigned_all.append(first)
+
             else:
                 errors.append(
                     f" There is no free memory space to assign process {num + 1} (Process Size : {process_sizes[num]}KB)")
 
-        elif 16 < process_list[num] <= 32:
+        elif 16 < process_sizes[num] <= 32:
 
             if balance_32kb > 0:
                 first = arg_list_32kb.pop(0)
@@ -110,8 +111,6 @@ def assign_process_to_memory(process_list, arg_list_8kb, arg_list_16kb, arg_list
 
     for [block_id, process_id, process_size] in assigned_all:
         print(f"{process_id} --- {block_id} --- (size: {process_size}KB)")
-
-
 
 
 # Print a list of any unused memory blocks remaining at the end of the program.
@@ -139,8 +138,8 @@ def print_free_memory():
 def enter_process_size(process_count):
     print("\n--- Process Size Entry : ---")
     for x in range(1, process_count + 1):
-        process_size = int(input(f"Size for P{x} : "))
-        processSizes.append(process_size)
+        process_size_int = int(input(f"Size for P{x} : "))
+        process_size.append(process_size_int)
 
 
 # function to print the errors which had occurred during the memory allocation process
@@ -159,6 +158,10 @@ def enter_process_count():
     try:
         count = int(input(f"\nEnter the number of processes  : "))
 
+        if count == 0:
+            print("Process count cannot be zero. Please Retry")
+            enter_process_count()
+
     except Exception as e:
         print(f"Exception Occurred : {e}  ")
         print("Please Retry")
@@ -172,6 +175,6 @@ def enter_process_count():
 memory_block_init()
 process_count = enter_process_count()
 enter_process_size(process_count)
-assign_process_to_memory(processSizes, list_8kb, list_16kb, list_32kb, processSizes)
+assign_process_to_memory(process_size, list_8kb, list_16kb, list_32kb)
 print_errors()
 print_free_memory()
